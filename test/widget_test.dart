@@ -11,20 +11,43 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:namer_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Nav bar correctly set', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.byIcon(Icons.home), findsOneWidget);
+    expect(find.byIcon(Icons.favorite), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('No favourites initially', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+
+    // Tap the 'heart' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.favorite));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that no favorites have been recorded
+    expect(find.text('No favorites yet!'), findsOneWidget);
+  });
+  testWidgets('Can log a favourite', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+    
+    // Tap the 'heart' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.home));
+    await tester.pump();
+
+    // Tap the 'Like' button and trigger a frame.
+    await tester.tap(find.text('Like'));
+    await tester.pump(); 
+
+    // Tap the 'heart' icon and trigger a frame.
+    await tester.tap(find.text('Favorites'));
+    await tester.pump();
+
+    // Verify that a favourite has been logged
+    expect(find.text('No favorites yet!'), findsNothing);
   });
 }
