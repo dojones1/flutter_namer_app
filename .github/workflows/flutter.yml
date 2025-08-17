@@ -25,10 +25,10 @@ jobs:
         run: flutter pub get
 
       - name: Lint
-        run: dart analyze
+        run: flutter analyze
 
       - name: Run tests
-        run: flutter test --no-pub
+        run: flutter test
 
       - name: Build Chrome web app
         run: flutter build web --release
